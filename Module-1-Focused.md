@@ -1,6 +1,6 @@
 # Embedded Systems (ECE23601) — Module-1 Focused Answers
 
-> Answers based strictly on the Module-1 notes provided. Anything added beyond the notes is explicitly flagged **[Beyond notes]**. Each diagram is a complete, standalone Overleaf/TikZ document — paste a block into Overleaf and it compiles as-is.
+> Answers based on the Module-1 notes provided. Anything added beyond the notes is flagged **[Beyond notes]**. Each diagram is a complete, standalone Overleaf/TikZ document — paste a block into Overleaf and it compiles as-is. Mark weights are shown per question; answers are sized to match.
 
 ---
 
@@ -8,116 +8,145 @@
 
 ## Q1. Comparison of Embedded System and General Computing System (7)
 
+**Definition.** A *general purpose computing system* is a combination of **generic hardware** and a **general purpose OS** that can run a wide variety of user applications. An *embedded system* is a combination of **special-purpose hardware** and (optionally) an **embedded OS**, dedicated to a **specific set of functions**.
+
+The computing revolution began with general-purpose needs, but these proved insufficient for embedded requirements, which demand *"something special"* — fast response to stimuli, meeting deadlines, power efficiency, and limited-memory operation.
+
 | **General Purpose Computing System** | **Embedded System** |
 |---|---|
-| Combination of generic hardware and a General Purpose OS for a variety of applications | Combination of special-purpose hardware and embedded OS for a specific set of applications |
-| Contains a General Purpose Operating System (GPOS) | May or may not contain an operating system |
-| Applications are alterable by the user (OS reinstall, add/remove apps) | Firmware is pre-programmed and non-alterable by the end-user (except OS kernel flashing via special settings) |
-| Performance is the key deciding factor — "Faster is Better" | Application-specific needs (performance, power, memory) are the key deciding factors |
-| Not tailored toward reduced operating power | Highly tailored to use hardware/OS power-saving modes |
-| Response requirements are not time-critical | Response time is highly critical for mission-critical systems |
-| Need not be deterministic in execution | Execution is deterministic for hard real-time types |
+| Generic hardware + General Purpose OS for many applications | Special-purpose hardware + embedded OS for a specific application set |
+| Always contains a GPOS | May or may not contain an OS |
+| Applications are user-alterable (reinstall OS, add/remove apps) | Firmware is pre-programmed, non-alterable by end-user (except kernel flashing via special settings) |
+| Performance is the key factor — "Faster is Better" | Application-specific needs (performance, power, memory) are the key factors |
+| Not tailored for low power | Highly tailored for power-saving modes |
+| Response is not time-critical | Response is highly time-critical for mission-critical types |
+| Execution need not be deterministic | Deterministic for hard real-time types |
 
 **Step-by-step reasoning:**
-1. General = generic hardware + GPOS; embedded = special hardware + optional embedded OS.
-2. User can reprogram a general system; embedded firmware is fixed.
-3. General optimises raw speed; embedded optimises application-specific constraints (power, memory, timing, determinism).
+1. The two differ first in *hardware + OS*: generic+GPOS vs special+embedded OS.
+2. They differ in *flexibility*: a general system is reprogrammable by the user; embedded firmware is fixed.
+3. They differ in *design priority*: general systems chase raw speed; embedded systems balance performance against power, memory, and deterministic timing.
 
 ---
 
 ## Q2. Characteristics of an Embedded System (6)
 
-1. **Application and Domain Specific** — built to do only its intended function; cannot be repurposed (a microwave's control unit can't replace an AC's).
-2. **Reactive and Real Time** — constantly senses real-world **events** and reacts in a designed way; real-time types must respond within deterministic deadlines (flight control, ABS). Not all are real-time.
-3. **Operates in Harsh Environment** — must withstand dust, heat, vibration, shock, supply fluctuation, corrosion, ageing.
-4. **Distributed** — may be one unit of a larger system (ATM = card reader + transaction + currency counter + printer; SCADA).
-5. **Small Size and Weight** — aesthetics matter; most products demand small, low-weight designs.
-6. **Power Concerns** — minimise heat dissipation, use low-power components and power-saving modes; critical for battery devices.
+Embedded systems share six important characteristics:
+
+1. **Application and Domain Specific** — designed to perform only its intended function and cannot be repurposed. *Example:* a microwave oven's control unit cannot replace an air conditioner's.
+2. **Reactive and Real Time** — constantly interacts with the real world through sensors. Any change in the environment (an **event**) is captured and the control algorithm **reacts** in a designed manner. **Real-time** types must respond within deterministic deadlines and must not miss them (flight control, ABS). *Not all embedded systems are real-time* (e.g. a toy).
+3. **Operates in Harsh Environment** — may face dust, high temperature, vibration, shock, supply fluctuation, corrosion, and ageing; the system must withstand these.
+4. **Distributed** — may be one unit within a larger system of independent cooperating units. *Example:* an ATM = card reader + transaction unit + currency counter + printer; also SCADA.
+5. **Small Size and Weight** — product aesthetics matter ("small is beautiful"); most products demand compact, low-weight designs.
+6. **Power Concerns** — must minimise heat dissipation (high heat needs bulky cooling fans); use low-power components and processors with power-saving modes — critical for battery-operated devices.
 
 **Step-by-step reasoning:**
-1. One dedicated job → application/domain specific.
-2. Senses events and reacts on deadlines → reactive + real time.
-3. Field deployment → harsh environment; often a sub-unit → distributed; product constraints → small size and low power.
+1. A dedicated single purpose makes it application/domain specific.
+2. Continuous sensing and reaction on deadlines make it reactive + real-time.
+3. Real-world field deployment forces harsh-environment tolerance, distribution, small size, and low power.
 
 ---
 
 ## Q3. Operational Quality Attributes (6)
 
-Attributes of the system while it is **operational/online**. Six:
+**Definition.** Operational quality attributes are **non-functional requirements** concerning the system **while it is in operation/online mode**. Six attributes:
 
-1. **Response** — quickness; how fast it tracks input changes (most need near real-time, e.g. flight control).
-2. **Throughput** — efficiency; rate of operation over a period (e.g. transactions/hour), measured against a **benchmark**.
-3. **Reliability** — how much you can rely on correct functioning; expressed via **MTBF** (mean time between failures) and **MTTR** (mean time to repair).
-4. **Maintainability** — ease of support/repair; complementary to reliability. **Preventive** (scheduled, e.g. replace printer cartridge) and **corrective** (after failure). Linked to availability: `A = MTBF / (MTBF + MTTR)`.
-5. **Security** — **Confidentiality** (no unauthorised disclosure), **Integrity** (no unauthorised modification), **Availability** (no unauthorised users).
-6. **Safety** — protects operators/public/environment from breakdown or hazardous emissions; needs safety analysis.
+1. **Response** — a measure of the **quickness** of the system; how fast it tracks changes in input. Most embedded systems need near-real-time response (e.g. a flight control system); some don't (an electronic toy).
+2. **Throughput** — deals with **efficiency**: the rate of operation over a stated period (e.g. transactions/hour for a card reader). Measured against a **benchmark** — a reference standard for comparison.
+3. **Reliability** — how much the proper functioning of the system can be relied upon. Quantified by:
+   - **MTBF (Mean Time Between Failures)** — frequency of failures.
+   - **MTTR (Mean Time To Repair)** — how long the system may be out of order after a failure.
+4. **Maintainability** — ease of maintenance/support; complementary to reliability (more reliable → less corrective maintenance). Two kinds: **preventive/scheduled** (e.g. replace a printer cartridge every *n* prints) and **corrective** (repair after an unexpected failure). It indicates **availability**:
+
+$$A_i = \frac{MTBF}{MTBF + MTTR}$$
+
+5. **Security** — three measures: **Confidentiality** (no unauthorised disclosure), **Integrity** (no unauthorised modification), **Availability** (no unauthorised users).
+6. **Safety** — deals with possible damage to operators, the public, and the environment from a breakdown or hazardous/radioactive emission; needs safety analysis to bring consequences to an acceptable level. Threats may be sudden (breakdown) or gradual (emissions).
 
 **Step-by-step reasoning:**
-1. Operational = behaviour while running.
-2. Response/throughput = speed & efficiency; reliability/maintainability = uptime & repair (MTBF/MTTR/availability); security/safety = protection of data and people.
+1. "Operational" = qualities visible while the system runs.
+2. Response and throughput measure speed and efficiency; reliability and maintainability measure uptime and repair (tied by the MTBF/MTTR availability formula); security and safety protect data/users and people/environment.
 
 ---
 
 ## Q4. Availability — MTBF = 6 months, MTTR = 4 weeks (5)
 
-**Given:** MTBF = 6 months = 180 days; MTTR = 4 weeks = 28 days.
+**Given:** MTBF = 6 months = **180 days**; MTTR = 4 weeks = **28 days**.
 
-$$A_i = \frac{MTBF}{MTBF + MTTR} = \frac{180}{180 + 28} = \frac{180}{208}$$
+**Formula:**
+
+$$A_i = \frac{MTBF}{MTBF + MTTR}$$
+
+**Substitute:**
+
+$$A_i = \frac{180}{180 + 28} = \frac{180}{208} = 0.8654$$
 
 $$\boxed{A_i = 0.8654 \approx 86.54\%}$$
 
 **Step-by-step reasoning:**
-1. Convert to common units: 6 months = 180 days, 4 weeks = 28 days.
-2. Apply `A = MTBF/(MTBF+MTTR) = 180/208`.
-3. = **0.8654 → 86.54%**.
+1. Convert both to common units: 6 months = 180 days, 4 weeks = 28 days.
+2. Apply the availability formula: `180 / (180 + 28) = 180/208`.
+3. Evaluate: **0.8654 → 86.54%**.
 
 ---
 
 ## Q5. MTTR — Availability = 80%, MTBF = 35 days (5)
 
-**Given:** `A_i` = 80% = 0.8; MTBF = 35 days.
+**Given:** `A_i` = 80% = **0.8**; MTBF = **35 days**.
 
-$$A_i = \frac{MTBF}{MTBF + MTTR} \;\Rightarrow\; MTTR = \frac{MTBF}{A_i} - MTBF$$
+**Start from the availability formula and rearrange:**
 
-$$MTTR = \frac{35}{0.8} - 35 = 43.75 - 35$$
+$$A_i = \frac{MTBF}{MTBF + MTTR} \;\Rightarrow\; MTBF + MTTR = \frac{MTBF}{A_i} \;\Rightarrow\; MTTR = \frac{MTBF}{A_i} - MTBF$$
+
+**Substitute:**
+
+$$MTTR = \frac{35}{0.8} - 35 = 43.75 - 35 = 8.75 \text{ days}$$
 
 $$\boxed{MTTR = 8.75 \text{ days} = 210 \text{ hours}}$$
 
 **Step-by-step reasoning:**
-1. Rearrange the availability formula for MTTR.
-2. `35/0.8 = 43.75` days; subtract MTBF: `43.75 − 35 = 8.75` days.
-3. Convert: `8.75 × 24 = 210` hours.
+1. Rearrange the availability formula to isolate MTTR.
+2. `35 / 0.8 = 43.75` days; subtract MTBF: `43.75 − 35 = 8.75` days.
+3. Convert to hours: `8.75 × 24 = 210` hours.
 
 ---
 
 ## Q6. Non-Operational Quality Attributes (5)
 
-Attributes addressed **outside** operational aspects. Five:
+**Definition.** Quality attributes addressed **not** on the basis of operational/runtime aspects — they concern building, evolving, and selling the product. Five attributes:
 
-1. **Testability & Debug-ability** — how easily the design/firmware can be tested, and how easily faults can be traced (at both hardware and firmware level).
-2. **Evolvability** — ease of modifying the product (firmware/hardware) to take advantage of new technologies.
-3. **Portability** — measure of system independence; ease of moving firmware to another processor/OS. Code in **C** ports easily (replace processor-specific functions + recompile); assembly ports poorly.
-4. **Time-to-Prototype and Market** — time from concept to a sellable product; reduced via rapid prototyping and off-the-shelf/reusable components; critical in a competitive market.
-5. **Per-Unit Cost and Revenue** — cost must be positioned correctly for marginal profit; governed by the product life-cycle phases (development → introduction → growth → maturity → decline).
+1. **Testability & Debug-ability** — *Testability* is how easily the design and application can be tested (both **hardware** — peripherals work as desired — and **firmware** — functions as expected). *Debug-ability* is the means of finding unexpected behaviour, at **hardware level** (hardware faults) and **firmware level** (coding flaws).
+2. **Evolvability** — the ease with which the product (firmware + hardware) can be **modified** to take advantage of new firmware or hardware technologies.
+3. **Portability** — a measure of **system independence**; how easily firmware can run on a different processor/controller/OS. Firmware in **C** ports easily (replace processor-specific functions and recompile); **assembly** code ports poorly.
+4. **Time-to-Prototype and Market** — *Time-to-market* is the time from product conception to it being ready for sale; reduced through **rapid prototyping** using off-the-shelf and reusable components. Critical in a competitive market — a competitor releasing first, or the technology being superseded, causes losses.
+5. **Per-Unit Cost and Revenue** — cost is a sensitive factor; it must be positioned for marginal profit through market study and cost-benefit analysis. Governed by the **product life-cycle** phases: development → introduction → growth → maturity → decline.
 
 **Step-by-step reasoning:**
-1. Non-operational = qualities not tied to runtime behaviour.
-2. They cover building/maintaining/evolving the product (testability, evolvability, portability) and its business viability (time-to-market, cost).
+1. Non-operational = qualities not tied to the system running.
+2. Three concern engineering the product (testability, evolvability, portability) and two concern its commercial viability (time-to-market, cost).
 
 ---
 
 ## Q7. Core of an Embedded System (10)
 
-An embedded system is built around a **single-chip controller** acting as the **master brain**. The controller can be a **microprocessor, microcontroller, FPGA, DSP, or ASIC/ASSP**.
+**Definition.** Every embedded system is built around a **single-chip controller** that acts as the **master brain**. This controller can be a **microprocessor, microcontroller, FPGA, DSP, or ASIC/ASSP**.
 
-It is a **reactive system**: it processes information from **sensors** and user inputs, and controls **actuators** that regulate physical variables.
-- Input user interfaces: keyboards, push-button switches. Output: LEDs, LCDs, buzzers.
+**Reactive nature.** An embedded system is a **reactive system**: control is achieved by **processing information from sensors and user interfaces** and **driving actuators** that regulate a physical variable.
+- Input user-interface devices: keyboards, push-button switches.
+- Output user-interface devices: LEDs, LCDs, piezoelectric buzzers.
 
-**Core elements:**
-- **Memory** — holds the control algorithm/configuration. Program storage = ROM (OTP, PROM, UVEPROM, EEPROM, FLASH); working memory = RAM (SRAM, DRAM, NVRAM).
-- **Communication interfaces** — onboard: I²C, SPI, UART, parallel bus; external: IR, Bluetooth, Wi-Fi.
-- **Sensors** (input ports) and **actuators** (output ports).
-- **Other supporting ICs and subsystems.**
+**Elements of the core:**
+
+- **System core (controller)** — executes the firmware (the master brain). May be a µP, µC, FPGA, DSP, or ASIC.
+- **Memory** — holds the control algorithm and configuration.
+  - *Program storage (ROM)* — OTP, PROM, UVEPROM, EEPROM, FLASH (non-volatile).
+  - *Working memory (RAM)* — SRAM, DRAM, NVRAM (volatile).
+- **Sensors** — at input ports; convert a real-world quantity into an electrical signal.
+- **Actuators** — at output ports; convert the core's output signal into physical action.
+- **Communication interfaces** — *onboard:* I²C, SPI, UART, parallel bus; *external:* IR, Bluetooth, Wi-Fi.
+- **Other supporting ICs and subsystems** — supervisory circuits, level shifters, etc.
+
+**Operation.** The sensors feed real-world data to the core; the firmware in memory processes it using the control algorithm; the core then drives the actuators to produce the required output, continuously reacting to new events.
 
 **Overleaf / TikZ code — elements of an embedded system:**
 
@@ -155,9 +184,9 @@ It is a **reactive system**: it processes information from **sensors** and user 
 ```
 
 **Step-by-step reasoning:**
-1. One controller chip is the brain (µP/µC/FPGA/DSP/ASIC).
-2. It reads sensors, runs the algorithm, drives actuators (reactive).
-3. Supported by memory (ROM+RAM), communication interfaces, and other ICs; firmware directs it all.
+1. One controller chip (µP/µC/FPGA/DSP/ASIC) is the brain that runs the firmware.
+2. Memory holds the program (ROM) and working data (RAM).
+3. Sensors feed inputs and actuators take outputs; communication interfaces and supporting ICs complete the core — together forming a reactive system.
 
 ---
 
@@ -165,18 +194,29 @@ It is a **reactive system**: it processes information from **sensors** and user 
 
 ## Q8. I²C Communication Interface (8)
 
-**I²C (Inter-Integrated Circuit)** — a **synchronous, bi-directional, half-duplex, two-wire** serial bus, developed by **Philips** (early 1980s).
+**Definition.** I²C (**Inter-Integrated Circuit**) is a **synchronous, bi-directional, half-duplex, two-wire** serial interface bus, developed by **Philips Semiconductors** in the early 1980s (originally for TV peripheral chips).
 
-**Two lines:** **SCL** (serial clock) and **SDA** (serial data), both with pull-ups.
+**The two bus lines.**
 
-**Features:** shared bus; devices are **Master** (initiates/terminates transfer, generates clock) or **Slave**; clock is always from the master; supports **multi-master**.
+| Line | Full form | Function |
+|---|---|---|
+| **SCL** | Serial Clock Line | Carries synchronisation clock pulses (always from the master) |
+| **SDA** | Serial Data Line | Carries the serial data (address + data) |
 
-**Sequence:**
-1. Master pulls SCL HIGH, then pulls SDA LOW while SCL HIGH → **Start**.
-2. Master sends 7-/10-bit slave address (MSB first) + **R/W** bit.
-3. Addressed slave returns an **acknowledge** bit.
-4. Data byte transferred (master→slave on write, slave→master on read), each byte ACKed.
-5. Master pulls SDA HIGH while SCL HIGH → **Stop**.
+Both lines are **pulled up** to V_CC via resistors, and every device taps onto the same two shared lines.
+
+**Master and slave roles.**
+- **Master** — initiates and terminates a transfer, generates the clock, and addresses slaves.
+- **Slave** — waits for commands addressed to it and responds.
+- Both master and slave can act as transmitter or receiver. I²C supports **multiple masters** on the same bus.
+
+**Working (communication sequence).**
+1. **Start condition** — the master pulls SCL HIGH, then pulls **SDA LOW while SCL is HIGH**. This signals the start of a transfer.
+2. **Address phase** — the master sends a **7-bit (or 10-bit) slave address** on SDA, MSB first, clocked by SCL. Data is valid during the HIGH period of the clock.
+3. **R/W bit** — the master sends a **Read (1) / Write (0)** bit to set the direction.
+4. **Acknowledge** — the addressed slave replies with an **ACK** bit on SDA.
+5. **Data transfer** — for a **write**, the master sends 8-bit data bytes to the slave; for a **read**, the slave sends data to the master. An **ACK** follows every byte (master ACKs on read, slave ACKs on write).
+6. **Stop condition** — the master pulls **SDA HIGH while SCL is HIGH**, ending the transfer.
 
 **Overleaf / TikZ code — I²C two-wire bus:**
 
@@ -215,26 +255,32 @@ It is a **reactive system**: it processes information from **sensors** and user 
 ```
 
 **Step-by-step reasoning:**
-1. Two shared pull-up lines: SCL (clock) + SDA (data).
-2. Master starts (SDA low while SCL high), addresses a slave, sets R/W, exchanges ACKed bytes, then stops.
-3. Half-duplex, multi-master, clock always from master.
+1. I²C needs only two shared pull-up lines — SCL (clock) and SDA (data).
+2. A transfer is framed by Start (SDA falls while SCL high) and Stop (SDA rises while SCL high) conditions.
+3. Between them the master sends address + R/W, and ACK-checked data bytes flow in the chosen direction — half-duplex, synchronous, multi-master.
 
 ---
 
 ## Q9. SPI Communication Protocol (8)
 
-**SPI (Serial Peripheral Interface)** — a **synchronous, bi-directional, full-duplex, four-wire** serial bus by **Motorola**; **single-master, multi-slave**.
+**Definition.** SPI (**Serial Peripheral Interface**) is a **synchronous, bi-directional, full-duplex, four-wire** serial interface bus, introduced by **Motorola**. It is a **single-master, multi-slave** system (only one master is active at a time).
 
-**Four lines:**
+**The four signal lines.**
 
-| Line | Function |
-|---|---|
-| **MOSI** (Master Out Slave In) | Data master → slave |
-| **MISO** (Master In Slave Out) | Data slave → master |
-| **SCLK** (Serial Clock) | Clock from master |
-| **SS** (Slave Select, active low) | Selects a slave |
+| Line | Full form | Function |
+|---|---|---|
+| **MOSI** | Master Out Slave In (SI/SDI) | Data from master to slave |
+| **MISO** | Master In Slave Out (SO/SDO) | Data from slave to master |
+| **SCLK** | Serial Clock | Clock signal, generated by the master |
+| **SS** | Slave Select (active low) | Selects which slave is active |
 
-Master generates the clock and selects a slave by driving its **SS LOW**; unselected slaves keep MISO at **high impedance**. Devices have a **control register** (master/slave, baud, clock) and **status register**.
+**Working.**
+1. The **master generates the clock (SCLK)**, which synchronises all transfers.
+2. To talk to a slave, the master **drives that slave's SS line LOW** (active low). Only the selected slave responds; the **MISO lines of unselected slaves float at high impedance** so they don't conflict on the shared bus.
+3. Because SPI is **full-duplex**, on each clock pulse a bit is shifted **out on MOSI** and a bit is shifted **in on MISO simultaneously** — data moves both directions at once.
+4. Each slave needs its **own SS line**, while MOSI, MISO, and SCLK are shared.
+
+**Configuration registers.** SPI devices contain a **control register** (master/slave selection, baud rate, clock control) and a **status register** (transmission/reception status).
 
 **Overleaf / TikZ code — SPI single-master, two-slave bus:**
 
@@ -269,21 +315,36 @@ Master generates the clock and selects a slave by driving its **SS LOW**; unsele
 ```
 
 **Step-by-step reasoning:**
-1. Four wires: shared MOSI/MISO/SCLK + a separate SS per slave.
-2. Master drives the clock and selects one slave via SS low.
-3. Full-duplex: simultaneous send (MOSI) and receive (MISO); unselected slaves release MISO (high-Z).
+1. SPI uses four wires: shared MOSI/MISO/SCLK plus one SS per slave.
+2. The master clocks the bus and selects a slave by pulling its SS low.
+3. Full-duplex shifting sends on MOSI and receives on MISO at the same time; unselected slaves release MISO (high-Z).
 
 ---
 
 ## Q10. Types of Read Only Memory (ROM) (10)
 
-ROM is **non-volatile** program/code storage. Types:
+**Definition.** ROM is the **program/code storage memory** that holds the control algorithm. It is **non-volatile** — it retains its contents after power is removed.
 
-1. **Masked ROM (MROM)** — one-time, factory-programmed by masking/metallisation. **Low cost** at high volume but **cannot be modified** for upgrades.
-2. **PROM / OTP** — programmed once by the **end user** by selectively burning nichrome/polysilicon fuses (unburned = 1, burned = 0). Low cost, cannot be reprogrammed (e.g. pacemakers, alarm/door-lock systems).
-3. **EPROM** — re-programmable; stores bits by charging a floating gate; **erased by UV light** through a quartz window (20–30 min). Tedious (must remove from board).
-4. **EEPROM** — erased/reprogrammed **electrically, in-circuit**, at byte level; chip-erase in milliseconds. More flexible but limited capacity (a few KB).
-5. **FLASH** — variation of EEPROM combining EEPROM's reprogrammability with high capacity; organised in **sectors/pages** (erase per sector before rewrite); ~thousands of erase cycles. The most popular ROM today (e.g. SST39LF010).
+**1. Masked ROM (MROM)**
+- A **one-time programmable** device using hardwired technology; **factory-programmed** by a masking and metallisation process from the user's data.
+- *Advantage:* very **low cost** at high production volume.
+- *Limitation:* firmware **cannot be modified** for upgrades.
+
+**2. PROM (Programmable ROM) / OTP**
+- Not pre-programmed; the **end user programs it once** using a PROM programmer that selectively **burns fuses** (nichrome/polysilicon). Unburned fuse = logic 1, burned = logic 0 (default state 1).
+- Low-cost; **cannot be reprogrammed**. Used for proven, finalised code (e.g. pacemakers, alarm and door-lock systems).
+
+**3. EPROM (Erasable PROM)**
+- **Re-programmable**; stores bits by charging the **floating gate** of an FET with high voltage.
+- Erased by exposing a **quartz window to UV light** for 20–30 minutes. Tedious — the chip must be removed from the board.
+
+**4. EEPROM (Electrically Erasable PROM)**
+- Erased and reprogrammed **electrically, in-circuit**, at **byte/register level**; chip-erase in a few milliseconds.
+- More flexible, but **limited capacity** (a few KB) compared to standard ROM.
+
+**5. FLASH**
+- A variation of EEPROM combining EEPROM's **reprogrammability** with the **high capacity** of standard ROM; the most popular ROM today.
+- Organised in **sectors/pages**, stored in floating-gate MOSFETs; erased per **sector/page** (must erase before rewriting); endurance ~thousands of cycles. *Example:* SST39LF010 (1 Mbit, 100,000 cycles). Used in USB/thumb drives and memory cards.
 
 **Overleaf / TikZ code — ROM classification:**
 
@@ -300,28 +361,45 @@ ROM is **non-volatile** program/code storage. Types:
 \node[root] (rom) at (0,0) {Program Storage Memory (ROM)\\\footnotesize non-volatile};
 \node[n] (m)  at (-6.4,-2.3) {Masked ROM\\(MROM)};
 \node[n] (p)  at (-3.2,-2.3) {PROM\\(OTP)};
-\node[n] (e)  at ( 0,-2.3)   {EPROM};
-\node[n] (ee) at ( 3.2,-2.3) {EEPROM};
-\node[n] (f)  at ( 6.4,-2.3) {FLASH};
+\node[n] (e)  at ( 0,-2.3)   {EPROM\\\footnotesize UV erase};
+\node[n] (ee) at ( 3.2,-2.3) {EEPROM\\\footnotesize electrical};
+\node[n] (f)  at ( 6.4,-2.3) {FLASH\\\footnotesize sector erase};
 \foreach \x in {m,p,e,ee,f}{\draw[ar] (rom) -- (\x);}
 \end{tikzpicture}
 \end{document}
 ```
 
 **Step-by-step reasoning:**
-1. All ROM is non-volatile; types differ by *who* programs and *how* it is erased.
-2. MROM (factory, none) → PROM (user once, none) → EPROM (UV erase) → EEPROM (electrical byte erase) → FLASH (electrical sector erase, high capacity).
-3. Flexibility and capacity increase from MROM to FLASH.
+1. All ROM is non-volatile; the types differ by **who programs it** and **how it is erased**.
+2. MROM (factory, no erase) → PROM (user once, no erase) → EPROM (UV erase) → EEPROM (electrical byte erase) → FLASH (electrical sector erase, high capacity).
+3. Flexibility and capacity rise from MROM to FLASH; cost-effectiveness for mass production is highest for MROM.
 
 ---
 
 ## Q11. Types of Random Access Memory (RAM) (6)
 
-RAM is **volatile** working memory (direct access). Types:
+**Definition.** RAM is the **data/working memory** of the controller. It is **volatile** (contents lost on power-off) and offers **direct access** to any location.
 
-1. **SRAM (Static RAM)** — stores data as **voltage** in **flip-flops** (typically 6 transistors/cell). **Fastest**, no refresh needed; but **low capacity and high cost**. Access time ~10 ns.
-2. **DRAM (Dynamic RAM)** — stores data as **charge** on a capacitor (1 transistor + 1 capacitor). **High density, low cost**; but charge leaks → needs **periodic refresh** (via a DRAM controller). Access time ~60 ns.
-3. **NVRAM (Non-Volatile RAM)** — SRAM with a small **battery backup** packaged together; retains data without external power (~10-year life), e.g. DS1644 (32 KB).
+**1. SRAM (Static RAM)**
+- Stores data as a **voltage**, held in **flip-flops** (typically a 6-transistor cell: 4 form the latch, 2 control access).
+- **Fastest** RAM; **does not need refreshing**.
+- *Limitations:* **low capacity** and **high cost**. Access time ≈ 10 ns.
+
+**2. DRAM (Dynamic RAM)**
+- Stores data as a **charge** on a capacitor (1 MOS transistor + 1 capacitor per cell).
+- *Advantages:* **high density, low cost**.
+- *Disadvantage:* charge **leaks**, so it must be **refreshed periodically** (every few ms) by a DRAM controller. Access time ≈ 60 ns.
+
+**3. NVRAM (Non-Volatile RAM)**
+- SRAM combined with a small **battery** in one package, so it **retains data without external power** (~10-year life). *Example:* DS1644 (32 KB).
+
+| Feature | SRAM | DRAM |
+|---|---|---|
+| Storage cell | 6 transistors (flip-flop), voltage | 1 transistor + capacitor, charge |
+| Refresh | Not needed | Required periodically |
+| Density / capacity | Low | High |
+| Cost | High | Low |
+| Speed | Fast (~10 ns) | Slower (~60 ns) |
 
 **Overleaf / TikZ code — RAM classification:**
 
@@ -346,13 +424,19 @@ RAM is **volatile** working memory (direct access). Types:
 
 **Step-by-step reasoning:**
 1. RAM is volatile working memory; three kinds.
-2. SRAM = flip-flops, fast, costly, no refresh; DRAM = capacitor, dense, cheap, needs refresh; NVRAM = SRAM + battery for non-volatility.
+2. SRAM uses flip-flops → fast, costly, no refresh; DRAM uses a capacitor → dense, cheap, needs refresh.
+3. NVRAM is SRAM + battery, giving RAM speed with non-volatile retention.
 
 ---
 
 ## Q12. Storage of 32-bit data 3D7A2390 at 0x30000 (Little vs Big Endian) (5)
 
-Bytes (MSB→LSB): Byte 3 = `3D`, Byte 2 = `7A`, Byte 1 = `23`, Byte 0 = `90`.
+**Endianness** specifies the order in which the bytes of a multi-byte word are stored in memory.
+
+Split the word into bytes (MSB → LSB): **Byte 3 = 3D**, Byte 2 = 7A, Byte 1 = 23, **Byte 0 = 90**.
+
+- **Little-Endian** — the **lowest-order byte (Byte 0) goes to the lowest address** ("little end first"). *E.g. Intel x86.*
+- **Big-Endian** — the **highest-order byte (Byte 3) goes to the lowest address** ("big end first"). *E.g. Motorola 68000.*
 
 | Address | Little-Endian | Big-Endian |
 |---|---|---|
@@ -392,36 +476,52 @@ Bytes (MSB→LSB): Byte 3 = `3D`, Byte 2 = `7A`, Byte 1 = `23`, Byte 0 = `90`.
 ```
 
 **Step-by-step reasoning:**
-1. Bytes from MSB→LSB: 3D, 7A, 23, 90.
-2. **Little-endian** = LSB first → 90 at the lowest address 0x30000, up to 3D.
-3. **Big-endian** = MSB first → 3D at 0x30000, up to 90.
+1. Break the word into four bytes from MSB to LSB: 3D, 7A, 23, 90.
+2. **Little-endian:** LSB first → 90 at 0x30000, then 23, 7A, 3D.
+3. **Big-endian:** MSB first → 3D at 0x30000, then 7A, 23, 90.
 
 ---
 
 ## Q13. UART Communication Interface (6)
 
-> **[Beyond notes]** — The Module-1 notes only list UART as an onboard interface but give no detailed section, so this answer uses standard knowledge.
+> **[Beyond notes]** — The Module-1 notes only *list* UART as an onboard interface; there is no detailed section, so this answer uses standard knowledge.
 
-**UART (Universal Asynchronous Receiver/Transmitter)** is an **asynchronous, serial, full-duplex** interface — there is **no shared clock line**; instead both ends agree on a **baud rate**.
+**Definition.** UART (**Universal Asynchronous Receiver/Transmitter**) is an **asynchronous, serial, full-duplex** interface. It has **no shared clock line** — instead both ends are pre-configured to the same **baud rate** (bits per second).
 
-- **Two data lines:** **TX** (transmit) and **RX** (receive); the TX of one device connects to the RX of the other (and vice-versa), with a common ground.
-- **Frame format:** one **start bit** (line pulled low) → **5–8 data bits** (LSB first) → optional **parity bit** (error check) → one or two **stop bits** (line high).
-- The line idles HIGH; the falling start bit tells the receiver to begin sampling at the agreed baud rate.
-- Common in RS-232 links, debug consoles, GPS/Bluetooth modules.
+**Signal lines.**
+- **TX** (transmit) and **RX** (receive), plus a common **GND**.
+- The **TX of one device connects to the RX of the other** and vice-versa, giving full-duplex communication.
+
+**Frame format.** Data is sent one byte at a time, framed so the receiver can synchronise:
+
+| Field | Purpose |
+|---|---|
+| **Start bit** (1) | Line pulled LOW to signal the start of a frame |
+| **Data bits** (5–8) | The actual data, sent LSB first |
+| **Parity bit** (optional) | Simple error check (even/odd) |
+| **Stop bit(s)** (1–2) | Line returns HIGH to mark the end |
+
+**Working.**
+1. The line **idles HIGH**.
+2. The transmitter sends a **start bit (HIGH→LOW)**; this falling edge tells the receiver to begin sampling.
+3. The receiver samples **5–8 data bits** at the agreed baud rate, then an optional **parity bit**, then the **stop bit(s)**.
+4. Because timing (not a clock wire) keeps the two in sync, both must agree on baud rate, data length, parity, and stop bits.
+
+Common uses: RS-232 links, debug/console ports, and GPS/Bluetooth modules.
 
 ```text
 Device A  TX ───────────────► RX  Device B
           RX ◄─────────────── TX
           GND ─────────────── GND
 
-Frame:  [Start] D0 D1 D2 D3 D4 D5 D6 D7 [Parity] [Stop]
-        idle high → start low → data (LSB first) → stop high
+Frame:  idle(H) [Start=L] D0 D1 D2 D3 D4 D5 D6 D7 [Parity] [Stop=H]
+                              (data sent LSB first)
 ```
 
 **Step-by-step reasoning:**
-1. UART is asynchronous — no clock line, so sender and receiver must use the same baud rate.
-2. Data is framed by start/stop bits (with optional parity) so the receiver can sync on each byte.
-3. TX↔RX cross-connection gives full-duplex serial communication.
+1. UART is asynchronous — no clock line, so sender and receiver use a pre-agreed baud rate.
+2. Each byte is wrapped in start/stop bits (with optional parity) so the receiver can lock onto it.
+3. Cross-connecting TX↔RX on both sides gives full-duplex serial communication.
 
 ---
 
@@ -429,24 +529,26 @@ Frame:  [Start] D0 D1 D2 D3 D4 D5 D6 D7 [Parity] [Stop]
 
 ### (a) Bluetooth
 
-- Low-cost, low-power, **short-range** wireless for data and voice; first proposed by **Ericsson (1994)**.
+**Definition.** A **low-cost, low-power, short-range** wireless technology for data and voice, first proposed by **Ericsson (1994)**.
 - Operates at **2.4 GHz** using **Frequency Hopping Spread Spectrum (FHSS)**.
-- Data rates: v1.2 up to 1 Mbps; v2.0+EDR up to 3 Mbps; v3.0/v4.0 up to 24 Mbps. Range ~30–100 feet.
-- Each device has a **48-bit unique address**; **packet-based**; point-to-point and point-to-multipoint.
-- A network of one master + up to **7 slaves** is a **Piconet**.
+- **Data rates:** v1.2 → 1 Mbps; v2.0+EDR → 3 Mbps; v3.0/v4.0 → up to 24 Mbps. **Range** ≈ 30–100 feet.
+- **Structure:** a *physical link* (RF transmission) and a *protocol stack* (rules of communication, held in the Bluetooth IC).
+- Each device has a **48-bit unique address**; communication is **packet-based**; supports point-to-point and point-to-multipoint.
+- A network of one **master + up to 7 slaves** is called a **Piconet**.
 
 ### (b) Wi-Fi
 
-- Wireless networked communication following **IEEE 802.11**; **IP-based**, each device has a unique **IP address**.
-- Needs a **Wi-Fi router / access point** that assigns IPs and routes packets.
-- Operates at **2.4 GHz or 5 GHz**; security via **WEP/WPA**.
-- Data rates 1 Mbps–1.73 Gbps (802.11 a/b/g/n/ac); range ~100–1000 feet.
-- Connect: enable radio → scan SSIDs → select SSID → enter password → connected.
+**Definition.** A popular wireless technology for **networked** communication, following the **IEEE 802.11** standard.
+- **IP-based** — every device has a unique **IP address**.
+- Requires a **Wi-Fi router / Wireless Access Point** that manages communication, **assigns IP addresses**, and **routes data packets**.
+- Operates at **2.4 GHz or 5 GHz**; secured by **WEP / WPA**.
+- **Data rates:** 1 Mbps–1.73 Gbps (802.11 a/b/g/n/ac); **range** ≈ 100–1000 feet.
+- **Connecting:** enable the Wi-Fi radio → scan for networks → list SSIDs → select one → enter password (if secured) → connected.
 
 **Step-by-step reasoning:**
-1. Both are 2.4 GHz wireless interfaces but for different scopes.
-2. Bluetooth = short-range, low-power, piconet (≤7 slaves), FHSS.
-3. Wi-Fi = networked, IP-based via an access point, higher rate and range.
+1. Both are 2.4 GHz wireless interfaces, but for different scopes.
+2. Bluetooth = short-range, low-power, master + ≤7 slaves (piconet), using FHSS.
+3. Wi-Fi = networked, IP-based through an access point, with much higher data rate and range.
 
 ---
 
@@ -454,30 +556,34 @@ Frame:  [Start] D0 D1 D2 D3 D4 D5 D6 D7 [Parity] [Stop]
 
 ## Q15. RTOS-Based Embedded Firmware Approach (6)
 
-In the **OS-based approach**, an application runs on top of an operating system. For products needing real-time response, a **Real Time Operating System (RTOS)** is used.
+**Context.** In the **OS-based firmware approach**, the application runs on top of an operating system. When a product demands **real-time, time-critical response**, a **Real Time Operating System (RTOS)** is used instead of a general-purpose OS.
 
-- Contains a **real-time kernel** providing **pre-emptive multitasking**, a **scheduler**, and support for **multiple threads/tasks**.
-- Allows **flexible scheduling** of CPU and memory and provides **task communication/synchronisation** mechanisms.
-- Suited to products demanding deterministic, time-critical response.
-- Examples: **Windows CE, VxWorks, pSOS, ThreadX, MicroC/OS-II, Embedded Linux, Symbian** (used in mobile phones, PDAs, handheld devices).
+**Key features of an RTOS.**
+- Contains a **Real-Time kernel** that provides **pre-emptive multitasking** — a higher-priority task can interrupt a lower-priority one.
+- Has a **scheduler** that flexibly allocates CPU time, and supports **multiple threads/tasks**.
+- Manages **memory** allocation and provides **task communication and synchronisation** mechanisms (so tasks can exchange data safely).
+- Guarantees **deterministic** response — tasks meet their deadlines, which a plain super loop cannot guarantee.
+
+**Examples.** Windows CE, VxWorks, pSOS, ThreadX, MicroC/OS-II, Embedded Linux, Symbian — used in mobile phones, PDAs, and handheld devices.
 
 **Step-by-step reasoning:**
-1. RTOS = OS-based approach for time-critical products.
-2. Its real-time kernel gives pre-emptive multitasking, scheduling, and task communication.
-3. This guarantees deterministic response, unlike a plain super loop.
+1. RTOS is the OS-based approach chosen for time-critical products.
+2. Its real-time kernel adds pre-emptive multitasking, scheduling, memory management, and task communication.
+3. These give deterministic, deadline-meeting behaviour that the super loop lacks.
 
 ---
 
 ## Q16. Super Loop-Based Embedded Firmware Approach (6)
 
-Used for applications that are **not time-critical**. After initialisation, tasks run **serially inside an infinite loop**.
+**Definition.** The **super loop** (conventional procedural) approach is used for applications that are **not time-critical**. After initialisation, the tasks execute **serially inside an infinite loop**.
 
+**Structure.**
 ```c
 void main()
 {
     Configurations();
     Initializations();
-    while(1)
+    while(1)            // the "super loop"
     {
         Task_1();
         Task_2();
@@ -487,26 +593,35 @@ void main()
 }
 ```
 
-- Execution order is **fixed and hard-coded** (the "super loop"); only a **hardware reset** or an **interrupt** breaks it.
-- **Advantages:** no OS needed; no scheduling/priority assignment; simple and cheap.
-- **Applications:** low-cost products, inherently sequential tasks (card reader, video-game toy).
-- **Drawbacks:** failure in one task can hang the whole system (WDT helps); **lack of real-timeliness** — as tasks grow, loop time grows and events may be missed.
+**Working.** Common parameters are configured and the system initialised once; then Task 1 … Task n run in a **fixed, hard-coded order**, after which control jumps back to Task 1 and repeats forever. The only way to break the loop is a **hardware reset** (returns to the start) or an **interrupt** (suspends the current task, runs the ISR, then resumes).
+
+**Advantages.**
+- No operating system required.
+- No need for scheduling or priority assignment.
+- Simple and low-cost; priorities/execution order are fixed and hard-coded.
+
+**Applications.** Low-cost products where response time is not critical, and inherently sequential tasks (e.g. a card reader: check card → authenticate → read/write; an electronic video-game toy).
+
+**Drawbacks.**
+- A failure in any one task can **hang the whole system** (a Watch Dog Timer helps but adds cost/overhead).
+- **Lack of real-timeliness** — as the number of tasks grows, the loop time grows, raising the chance of **missing events** (e.g. a keypress missed unless held long enough). Interrupts can handle urgent external events.
 
 **Step-by-step reasoning:**
-1. Initialise once, then loop the tasks forever in fixed order.
-2. No OS/scheduler — simple but not real-time.
-3. More tasks → slower loop → risk of missed events; only reset/interrupt interrupts the flow.
+1. Initialise once, then loop the tasks endlessly in a fixed order.
+2. No OS/scheduler keeps it simple and cheap but not real-time.
+3. More tasks → slower loop → missed events; only reset or an interrupt breaks the normal flow.
 
 ---
 
 ## Q17. Assembly Language → Machine Language Conversion (7)
 
-The flow converts human-readable assembly (mnemonics) into the hex machine code dumped to code memory:
+**Goal.** Convert human-readable **assembly (mnemonics)** into the **machine-code hex file** that is dumped into the code memory.
 
-1. **Source files** (`.asm` / `.src`) — one per module; can be assembled separately.
-2. **Assembler** — translates each module to an **object file** (`.obj`, relocatable; modules share data via `PUBLIC`/`EXTRN`). e.g. A51.
-3. **Linker/Locator** — links all object modules + **library files**, resolves references, and assigns **absolute addresses** → **absolute object file**. e.g. BL51.
-4. **Object-to-Hex converter** — produces the **machine code (hex file)**. e.g. OH51.
+**Stages.**
+1. **Source files (`.asm` / `.src`)** — the program is written as one or more modules; each can be assembled separately to catch syntax errors. Modules share variables/subroutines via the `PUBLIC` and `EXTRN` keywords.
+2. **Module Assembler** — translates each source module into a **relocatable object file (`.obj`)** (no absolute addresses yet). *Example:* A51 from Keil.
+3. **Linker / Locator** — links all object modules together with the **library files**, resolves external references between modules, and assigns **absolute memory addresses**, producing an **absolute object file**. *Example:* BL51 from Keil.
+4. **Object-to-Hex Converter** — converts the absolute object file into the final **machine-code hex file** (ASCII representation of the machine code) for the target's code memory. *Example:* OH51 from Keil.
 
 **Overleaf / TikZ code — assembly to machine code:**
 
@@ -522,7 +637,7 @@ The flow converts human-readable assembly (mnemonics) into the hex machine code 
 ]
 \node[b] (src){Source files (.asm / .src)};
 \node[b, below=of src]  (asm){Module Assembler};
-\node[b, below=of asm]  (obj){Object files (.obj)};
+\node[b, below=of asm]  (obj){Object files (.obj, relocatable)};
 \node[b, below=of obj]  (link){Linker / Locator};
 \node[b, below=of link] (abs){Absolute object file};
 \node[b, below=of abs]  (hexc){Object-to-Hex converter};
@@ -540,22 +655,23 @@ The flow converts human-readable assembly (mnemonics) into the hex machine code 
 ```
 
 **Step-by-step reasoning:**
-1. Each source module → assembler → relocatable `.obj`.
-2. Linker/locator merges objects + libraries and fixes absolute addresses → absolute object file.
-3. Hex converter outputs the final machine-code hex file for the code memory.
+1. Each assembly module is assembled into a relocatable `.obj`.
+2. The linker/locator merges the objects with libraries, resolves references, and fixes absolute addresses → absolute object file.
+3. The hex converter emits the final machine-code hex file for the code memory.
 
 ---
 
 ## Q18. High-Level Language → Machine Language Conversion (7)
 
-The same back-end flow, but the front-end is a **cross-compiler** (firmware is written on a PC and compiled for a *different* target processor).
+**Goal.** Convert **C / Embedded C** source into the target's **machine-code hex file**. This is **cross-platform development**: the firmware is written on a PC (Intel/AMD) and compiled for a *different* target processor (8051, PIC, ARM), so a **cross-compiler** is used.
 
-1. **Source files** (`.c`) — written in C/Embedded C.
-2. **Cross-compiler** — translates each C module to a relocatable **object file** (`.obj`). e.g. Keil C51.
-3. **Linker/Locator** — links objects + **library files**, resolves references, assigns absolute addresses → **absolute object file**.
-4. **Object-to-Hex converter** — produces the **machine code (hex file)** for the target's code memory.
+**Stages.**
+1. **Source files (`.c`)** — the program is written in C/Embedded C.
+2. **Cross-compiler** — translates each C module into a **relocatable object file (`.obj`)** for the target processor. *Example:* Keil C51.
+3. **Linker / Locator** — links the object files with the **library files**, resolves references, and assigns **absolute addresses** → **absolute object file**.
+4. **Object-to-Hex Converter** — produces the final **machine-code hex file** for the target's code memory.
 
-> **[Beyond notes]** The notes describe the assembly flow and the *concept* of cross-compilation, but not an explicit HLL block diagram; the diagram below mirrors the assembly flow with the compiler as the front-end, which is the standard representation.
+> **[Beyond notes]** The notes describe the assembly conversion flow and the *concept* of cross-compilation but do not give an explicit HLL block diagram. The diagram below is the standard representation — the assembly back-end with a **cross-compiler** as the front-end.
 
 **Overleaf / TikZ code — high-level language to machine code:**
 
@@ -571,7 +687,7 @@ The same back-end flow, but the front-end is a **cross-compiler** (firmware is w
 ]
 \node[b] (src){Source files (.c — Embedded C)};
 \node[b, below=of src]  (cc){Cross-compiler (e.g. Keil C51)};
-\node[b, below=of cc]   (obj){Object files (.obj)};
+\node[b, below=of cc]   (obj){Object files (.obj, relocatable)};
 \node[b, below=of obj]  (link){Linker / Locator};
 \node[b, below=of link] (abs){Absolute object file};
 \node[b, below=of abs]  (hexc){Object-to-Hex converter};
@@ -589,40 +705,50 @@ The same back-end flow, but the front-end is a **cross-compiler** (firmware is w
 ```
 
 **Step-by-step reasoning:**
-1. C source → **cross-compiler** (runs on PC, targets another processor) → relocatable `.obj`.
-2. Linker/locator merges objects + libraries and assigns absolute addresses.
-3. Hex converter produces the final machine-code hex file — same back-end as the assembly flow.
+1. C source is fed to a **cross-compiler** (runs on the PC, targets another processor) → relocatable `.obj`.
+2. The linker/locator merges objects with libraries and assigns absolute addresses.
+3. The hex converter emits the final machine-code hex file — the same back-end as the assembly flow, only the front-end differs (compiler vs assembler).
 
 ---
 
 ## Q19. Advantages and Drawbacks of High-Level Language (5)
 
-**Advantages:**
-- **Reduced development time** — less hardware knowledge needed; fewer lines of code per task.
-- **Developer independence** — universal syntax + commenting make firmware understandable by any developer.
-- **Portability** — C firmware ports to another processor by replacing processor-specific functions and recompiling.
+**Advantages.**
+- **Reduced development time** — requires less knowledge of internal hardware, and fewer lines of code achieve a task than in assembly.
+- **Developer independence** — high-level syntax is universal, and with strict rules plus commenting, the firmware is understandable by any other developer.
+- **Portability** — firmware written in C can be ported to a different processor by replacing only the processor-specific functions and recompiling.
 
-**Drawbacks:**
-- **Poor optimisation by some cross-compilers** — may not generate optimised target-specific code (larger/slower), though modern compilers are improving.
-- **Not ideal for low-level hardware** — inefficient when access timing is critical (ns/µs order).
+**Drawbacks.**
+- **Poor optimisation by some cross-compilers** — generated code may not be optimised for the target (larger size, lower performance), though modern compilers are improving.
+- **Not ideal for low-level hardware** — inefficient where hardware access timing is critical (order of ns/µs).
 - **High investment cost** — IDEs with cross-compilers cost more than assembly tools.
 
 **Step-by-step reasoning:**
-1. HLL wins on development speed, readability/portability.
-2. It loses on fine optimisation, precise timing-critical hardware access, and tool cost.
+1. HLL wins on development speed, readability, developer-independence, and portability.
+2. It loses on fine code optimisation, precise timing-critical hardware access, and tooling cost.
 
 ---
 
 ## Q20. Three Types of Mixing Assembly with High-Level Language (6)
 
-1. **Mixing Assembly into High-Level Language** — the program is mostly in C, but assembly is used where the cross-compiler lacks a feature (e.g. ISRs), where hand-written assembly is faster/more optimised, or where timing-critical hardware access can't meet specs in C. (In Keil C51: use `#pragma SRC` to emit a `.SRC`, rename to `.A51`, insert the assembly.)
-2. **Mixing High-Level Language into Assembly** — the program is mostly in assembly (for optimisation/expert control), but C is added for parts hard to do in assembly (e.g. 16-bit multiply/divide on 8051) or to use built-in C library functions. (C51 passes up to 3 arguments via registers R2–R7.)
-3. **Inline Assembly** — assembly instructions are inserted directly inside C source, avoiding the overhead of calling a separate routine; delimited by cross-compiler-specific keywords (C51: `#pragma asm` … `#pragma endasm`).
+Certain situations need assembly and a high-level language combined. There are three types:
+
+**1. Mixing Assembly into High-Level Language** — the program is mostly in **C**, with **assembly added** where needed. Used when:
+- the cross-compiler lacks support for a feature (e.g. ISR functions),
+- hand-written assembly is wanted for speed/optimisation over compiler output,
+- timing-critical hardware access cannot meet specs in C.
+*(In Keil C51: use `#pragma SRC` to make the compiler emit a `.SRC` file, rename it to `.A51`, then insert the assembly into the function body.)*
+
+**2. Mixing High-Level Language into Assembly** — the program is mostly in **assembly** (for optimised, high-performance, expertly handled code), with **C added** for parts that are hard in assembly (e.g. 16-bit multiply/division on the 8051) or to use built-in C **library functions**.
+*(In C51, up to three arguments are passed via registers R2–R7.)*
+
+**3. Inline Assembly** — assembly instructions are inserted **directly inside the C source**, avoiding the overhead of calling a separate assembly routine. The block is delimited by cross-compiler-specific keywords.
+*(In C51: `#pragma asm` … `#pragma endasm`.)*
 
 **Step-by-step reasoning:**
-1. Type 1: C-dominant, assembly added for missing features/speed/timing.
-2. Type 2: assembly-dominant, C added for hard operations/library functions.
-3. Type 3: inline assembly embedded in C to avoid call overhead.
+1. Type 1 is C-dominant with assembly added for missing features, speed, or timing.
+2. Type 2 is assembly-dominant with C added for difficult operations or library functions.
+3. Type 3 embeds assembly inline within C to avoid the cost of a routine call.
 
 ---
 
